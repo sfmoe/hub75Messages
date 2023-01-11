@@ -34,9 +34,9 @@ def message_db():
 
         cur.execute("""
             insert into default_messages (message, color)
-            values ( 'this is a test message 😂', '#FF0000'),
-                ( 'Im inside this machine', '#00FFFF'),
-                ( 'Goodbye cruel world', '#c0ffc0');
+            values ( '🔴 Live now at twitch.tv/sfmoe', '#FFFFFF'),
+                ( '🟢 Starting now... hang on and say hello in chat', '#FFFFFF'),
+                ( '🛑 until the next time...find me @sfmoe on most social media', '#c0ffc0');
         """)
         con.commit()
     else:

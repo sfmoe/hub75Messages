@@ -1,0 +1,11 @@
+[Unit]
+Description=Hub75Message
+After=network.target
+
+[Service]
+WorkingDirectory=/home/sfmoe/hub75message/
+ExecStart=/usr/bin/python /home/sfmoe/hub75message/main.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -2,6 +2,8 @@ import flask
 
 import database
 request = flask.request
+import matrixigif
+
 
 message_queue, default_messages = database.message_db()
 
@@ -13,7 +15,8 @@ app.config.update(
 )
 
 def save_message(message):
-     return(message)
+    matrixigif.makeGif(message)
+    return({"status": "Created image"})
 
 
 @app.route("/")
@@ -22,11 +25,11 @@ def home():
 @app.route('/messages', methods= ['POST', 'PUT', 'DELETE'])
 def messages():
     if request.method == 'POST':
-        message = request.form
+        message = request.form.get("message")
         return save_message(message)
 
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=80)
     con.close()

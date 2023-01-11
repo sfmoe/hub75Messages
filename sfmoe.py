@@ -1,7 +1,4 @@
 # code originally from https://github.com/poemusica/rpi-matrix-gif
-
-import argparse
-from pathlib import Path
 import time
 
 from PIL import Image, ImageSequence
@@ -39,32 +36,9 @@ def display_gif(path):
             time.sleep(frame.info['duration']/1000)
 
 
-def _get_parser():
-    """Parses command line arguments."""
-    parser = argparse.ArgumentParser(description='Display gif on LED matrix.')
-    parser.add_argument('gif_path',
-                        nargs='?',
-                        metavar='PATH_TO_GIF',
-                        type=Path,
-                        default=Path(__file__).parent / 'myGIF.gif',
-                        help='the path to the gif file')
-    
-    return parser
+
 
 
 if __name__ == '__main__':
-    print('*********************************************\n'
-          'display_gif script created by Heather Mahan.\n'
-          'For more information, see documentation at\n'
-          'https://github.com/poemusica/rpi-matrix-gif\n'
-          '*********************************************')
-    
-    parser = _get_parser()
-    args = parser.parse_args()
-    parser.print_help()
-    
-    print('*********************************************'
-          '\nThis script uses the rgbmatrix library by hzeller:\n'
-          'https://github.com/hzeller/rpi-rgb-led-matrix')
-    
-    display_gif(args.gif_path)
+#to start use entr > "sudo ls stage.gif | sudo python sfmoe.py"
+    display_gif("stage.gif")

@@ -11,11 +11,15 @@
 <body>
 <div>
     <h2>Default Messages</h2>
- {% for message in default_messages %}
-    <div style="color: {{message[2]}}">
-        {{message[1]}}
-    </div>
- {% endfor %}
+    <form action="/messages" method="POST">
+        <select name="message">
+            {% for message in default_messages %}
+                <option value="{{message[1]}}">{{message[1]}}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Send Message</button>
+    </form>
+
 </div>
 
 <div>
@@ -25,6 +29,14 @@
         {{message[1]}}
     </div>
  {% endfor %}
+</div>
+
+<div class="message">
+<h2>Send a Message</h2>
+    <form action="/messages" method="POST">
+        <label><input name="message"></label>
+        <button type="submit">Send Message</button>
+    </form>
 </div>
 <!-- <img src="{{url_for('static', filename='images/hide.gif')}}" alt=""> -->
 <!-- <button class="ms-primary">test</button> -->

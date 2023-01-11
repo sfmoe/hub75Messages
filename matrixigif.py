@@ -1,6 +1,5 @@
 from PIL import Image, ImageDraw, ImageFont
 
-
 width=64
 height=32
 
@@ -36,4 +35,4 @@ def makeGif(text):
     animate(text)
 
 
-makeGif("🔴 Live Now twitch.tv/sfmoe")
+# makeGif("🔴 Live Now twitch.tv/sfmoe")
