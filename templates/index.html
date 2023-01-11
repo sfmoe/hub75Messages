@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Matrix Sign</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/minstyle.io@2.0.1/dist/css/minstyle.io.min.css">
+
+</head>
+<body>
+<div>
+    <h2>Default Messages</h2>
+ {% for message in default_messages %}
+    <div style="color: {{message[2]}}">
+        {{message[1]}}
+    </div>
+ {% endfor %}
+</div>
+
+<div>
+    <h2>Messages</h2>
+ {% for message in message_queue %}
+    <div style="color: {{message[2]}}">
+        {{message[1]}}
+    </div>
+ {% endfor %}
+</div>
+<!-- <img src="{{url_for('static', filename='images/hide.gif')}}" alt=""> -->
+<!-- <button class="ms-primary">test</button> -->
+</body>
+</html>
