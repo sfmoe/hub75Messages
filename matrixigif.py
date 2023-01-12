@@ -2,8 +2,8 @@ from PIL import Image, ImageDraw, ImageFont
 
 width=64
 height=32
-
-emojiFont = ImageFont.truetype("./static/fonts/seguiemj.ttf", 24)
+fontSize=24
+emojiFont = ImageFont.truetype("./static/fonts/seguiemj.ttf", 40)
 
 
 def makeStage():
@@ -11,28 +11,53 @@ def makeStage():
     draw = ImageDraw.Draw(image)
     return image
 
-def makeText(text, x=0, y=10):
+def makeText(text="sample text", x=0, y=10, multiline=False):
     global emojiFont
     stage = makeStage()
     layer = ImageDraw.Draw(stage);
-    layer.text( (x, y), text, font=emojiFont, embedded_color=True)
+    if multiline:
+        emojiFont = ImageFont.truetype("./static/fonts/seguiemj.ttf", 20)
+        textlist = list(text)
+        listlen = int(len(textlist)/2)
+        textlist.insert( listlen, "\n" )
+        layer.multiline_text((x, 4), "".join(textlist), font=emojiFont, embedded_color=True, align="left")
+    else:
+        layer.text( (x, y), text, font=emojiFont, embedded_color=True)
     return stage
 
-def animate(text):
+def static(text, multiline):
+    global width
+    global height
+    frames = []
+    for number in range(1, 25):
+        textwidth, textheight = emojiFont.getsize("tesT".join(text))
+        frames.append(makeText(text, 0, int((height-textheight)), multiline))
+    frame_one = frames[0]
+    frame_one.save("stage.gif", format="GIF", append_images=frames, save_all=True, duration=100, loop=0)
+
+def animate(text, multiline):
+    # only scrolls if text goes out of bounds
     global width
     global height
     global emojiFont
     frames = []
     xplace = width
     textwidth, textheight = emojiFont.getsize(text)
-    while xplace > (0-textwidth):
-        frames.append(makeText(text, xplace, int((height-textheight)) ))
-        xplace -= 5
+    if textwidth-15 < width:
+        for number in range(1, 25):
+            frames.append(makeText(text, multiline))
+    else:
+        while xplace > (0-textwidth):
+            frames.append(makeText(text, xplace, int((height-textheight)), multiline ))
+            xplace -= 5
     frame_one = frames[0]
     frame_one.save("stage.gif", format="GIF", append_images=frames, save_all=True, duration=100, loop=0)
 
-def makeGif(text):
-    animate(text)
+def makeGif(text, scrolltype, multiline):
+    if (scrolltype=="scroll"):
+        animate(text, multiline)
+    elif(scrolltype=="static"):
+        static(text, multiline)
 
 
-# makeGif("🔴 Live Now twitch.tv/sfmoe")
+# makeGif("🔴 Live Now twitch.tv/sfmoe", "scroll", True)

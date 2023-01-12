@@ -33,10 +33,6 @@ def display_gif(path):
             matrix.SetImage(frame)
             time.sleep(frame.info['duration']/1000)
 
-
-
-
-
 if __name__ == '__main__':
 #to start use entr > "sudo ls stage.gif | sudo python sfmoe.py"
      display_gif("/home/sfmoe/hub75message/stage.gif")

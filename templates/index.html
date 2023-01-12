@@ -35,6 +35,14 @@
 <h2>Send a Message</h2>
     <form action="/messages" method="POST">
         <label><input name="message"></label>
+        <select name="multiline">
+            <option value="single" default>Single</option>
+            <option value="multiline">Multiline</option>
+        </select>
+        <select name="scrolltype">
+            <option value="scroll" default>Scroll</option>
+            <option value="static">Static</option>
+        </select>
         <button type="submit">Send Message</button>
     </form>
 </div>

@@ -14,10 +14,6 @@ app.config.update(
     
 )
 
-def save_message(message):
-    matrixigif.makeGif(message)
-    return({"status": "Created image"})
-
 
 @app.route("/")
 def home():
@@ -25,8 +21,16 @@ def home():
 @app.route('/messages', methods= ['POST', 'PUT', 'DELETE'])
 def messages():
     if request.method == 'POST':
+        multiline = False
+        scrolltype = request.form.get("scrolltype")
+
         message = request.form.get("message")
-        return save_message(message)
+
+        if(request.form.get("multiline")=="multiline"):
+            multiline=True
+
+        matrixigif.makeGif(message, scrolltype, multiline)
+        return({"status": "Created image", "message": message, "multiline": multiline, "scrolltype": scrolltype})
 
 
 
