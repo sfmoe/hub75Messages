@@ -1,0 +1,11 @@
+[Unit]
+Description=Hub75Message display gif service
+After=network.target
+
+[Service]
+WorkingDirectory=/home/sfmoe/hub75message/
+ExecStart=/bin/bash -c '/home/sfmoe/hub75message/startgif.sh'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

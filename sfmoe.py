@@ -1,9 +1,7 @@
 # code originally from https://github.com/poemusica/rpi-matrix-gif
 import time
-
 from PIL import Image, ImageSequence
 from rgbmatrix import RGBMatrix, RGBMatrixOptions
-
 
 def get_frames(path):
     # Returns an iterable of gif frames.
@@ -41,4 +39,4 @@ def display_gif(path):
 
 if __name__ == '__main__':
 #to start use entr > "sudo ls stage.gif | sudo python sfmoe.py"
-    display_gif("stage.gif")
+     display_gif("/home/sfmoe/hub75message/stage.gif")
