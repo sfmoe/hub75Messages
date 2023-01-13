@@ -24,4 +24,4 @@ caveat:
 ## Sample Gif output with emoji
 ---
 
-![Alt text](static/images/test_output.gif "test image")
+![test ouput from script](static/images/test_output.gif "test ouput from script")
