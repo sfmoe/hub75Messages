@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw, ImageFont
 width=64
 height=32
 fontSize=24
-emojiFont = ImageFont.truetype("./static/fonts/seguiemj.ttf", 40)
+emojiFont = ImageFont.truetype("./static/fonts/seguiemj.ttf", fontSize)
 
 
 def makeStage():

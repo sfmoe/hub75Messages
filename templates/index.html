@@ -9,7 +9,14 @@
 
 </head>
 <body>
-<div>
+    <div class="container">
+        <div class="ms-display-flex ms-flex-direction-column ms-flex-justify-center ms-flex-align-content-center">
+                <div class="ms-text-center">
+                    <img src="{{url_for('static', filename='stage.gif')}}" alt="" style="height: 100px; width: auto">
+                </div>
+        </div>
+    </div>
+<div class="container">
     <h2>Default Messages</h2>
     <form action="/messages" method="POST">
         <select name="message">
@@ -22,7 +29,7 @@
 
 </div>
 
-<div>
+<div class="container">
     <h2>Messages</h2>
  {% for message in message_queue %}
     <div style="color: {{message[2]}}">
@@ -31,10 +38,10 @@
  {% endfor %}
 </div>
 
-<div class="message">
+<div class="message container">
 <h2>Send a Message</h2>
     <form action="/messages" method="POST">
-        <label><input name="message"></label>
+        <label><input name="message" placeholder="enter your message"></label>
         <select name="multiline">
             <option value="single" default>Single</option>
             <option value="multiline">Multiline</option>
@@ -46,7 +53,30 @@
         <button type="submit">Send Message</button>
     </form>
 </div>
-<!-- <img src="{{url_for('static', filename='images/hide.gif')}}" alt=""> -->
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+        let forms = document.querySelectorAll("form");
+        forms.forEach(element => {
+            element.addEventListener("submit", e=>{
+                e.preventDefault();
+                let formData = new FormData(e.target);
+                fetch("/messages",
+                    {
+                        body: formData,
+                        method: "post"
+                    }).then(r=>r.json())
+                    .then(d=>{
+                        console.log(d)
+                        window.location.reload();
+                    });
+
+            })
+        });
+    })
+</script>
+
 <!-- <button class="ms-primary">test</button> -->
 </body>
 </html>

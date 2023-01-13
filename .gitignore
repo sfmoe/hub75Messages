@@ -2,3 +2,5 @@
 **/__pycache__
 messages.db
 **/*.ttf
+stage.gif
+**/stage.gif
