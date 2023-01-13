@@ -1,9 +1,17 @@
 from PIL import Image, ImageDraw, ImageFont
+import os
+import pathlib
 
 width=64
 height=32
 fontSize=24
-emojiFont = ImageFont.truetype("./static/fonts/seguiemj.ttf", fontSize)
+working_dir = pathlib.Path(__file__).parent.absolute()
+gif_folder = os.path.join(working_dir, "static/images/outgif")
+font_folder = os.path.join(working_dir, "static/fonts")
+gif_name = "stage.gif"
+
+emojiFont = ImageFont.truetype(os.path.join(font_folder, "seguiemj.ttf"), fontSize)
+
 
 
 def makeStage():
@@ -33,7 +41,7 @@ def static(text, multiline):
         textwidth, textheight = emojiFont.getsize("tesT".join(text))
         frames.append(makeText(text, 0, int((height-textheight)), multiline))
     frame_one = frames[0]
-    frame_one.save("stage.gif", format="GIF", append_images=frames, save_all=True, duration=100, loop=0)
+    frame_one.save(os.path.join(gif_folder, gif_name), format="GIF", append_images=frames, save_all=True, duration=100, loop=0)
 
 def animate(text, multiline):
     # only scrolls if text goes out of bounds
@@ -51,7 +59,7 @@ def animate(text, multiline):
             frames.append(makeText(text, xplace, int((height-textheight)), multiline ))
             xplace -= 5
     frame_one = frames[0]
-    frame_one.save("stage.gif", format="GIF", append_images=frames, save_all=True, duration=100, loop=0)
+    frame_one.save(os.path.join(gif_folder, gif_name), format="GIF", append_images=frames, save_all=True, duration=100, loop=0)
 
 def makeGif(text, scrolltype, multiline):
     if (scrolltype=="scroll"):

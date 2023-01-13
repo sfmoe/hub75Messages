@@ -1,4 +1,3 @@
 #!/bin/bash
 
-
-ls stage.gif | python sfmoe.py
+python watchgif.py

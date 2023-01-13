@@ -2,7 +2,7 @@ import flask
 
 import database
 request = flask.request
-import matrixigif
+import makegif
 
 
 message_queue, default_messages = database.message_db()
@@ -29,7 +29,7 @@ def messages():
         if(request.form.get("multiline")=="multiline"):
             multiline=True
 
-        matrixigif.makeGif(message, scrolltype, multiline)
+        makegif.makeGif(message, scrolltype, multiline)
         return({"status": "Created image", "message": message, "multiline": multiline, "scrolltype": scrolltype})
 
 
