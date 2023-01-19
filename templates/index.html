@@ -16,9 +16,9 @@
                 </div>
         </div>
     </div>
-<div class="container">
+<div class="container messagesforms">
     <h2>Default Messages</h2>
-    <form action="/messages" method="POST">
+    <form action="/messages" method="POST" name="defaultmessages">
         <select name="message">
             {% for message in default_messages %}
                 <option value="{{message[1]}}">{{message[1]}}</option>
@@ -40,11 +40,11 @@
  {% endfor %}
 </div>
 
-<div class="message container">
+<div class="messagesforms container">
 <h2>Send a Message</h2>
-    <form action="/messages" method="POST">
-        <label><input name="message" placeholder="enter your message"></label>
-        <select name="multiline">
+    <form action="/messages" method="POST" name="messages" >
+        <input name="message" placeholder="enter your message">
+        <select class="smulti" name="multiline">
             <option value="single" default>Single</option>
             <option value="multiline">Multiline</option>
         </select>
@@ -56,16 +56,60 @@
     </form>
 </div>
 
-
+<div class="system container">
+    <h2>Gif Panel Control</h2>
+    <div style="display: inline-block;">
+        <form name="stop-server" action="/sys" method="POST">
+            <input type="hidden" name="status" value="stop">
+            <input type="submit" value="stop"><div class="ms-loading ms-display-none"></div>
+        </form>
+    </div>
+    <div style="display: inline-block;">
+        <form name="start-server" action="/sys" method="POST">
+            <input type="hidden" name="status" value="start">
+            <input type="submit" name="status" value="start"><div class="ms-loading ms-display-none"></div>
+        </form>
+    </div>
+    <div style="display: inline-block;">
+        <form name="restart-server" action="/sys" method="POST">
+            <input type="hidden" name="status" value="restart">
+            <input type="submit" name="status" value="restart"><div class="ms-loading ms-display-none"></div>
+        </form>
+    </div>
+</div>
 <script>
     document.addEventListener('DOMContentLoaded', ()=>{
-        let forms = document.querySelectorAll("form");
-        forms.forEach(element => {
-            element.addEventListener("submit", e=>{
+        let forms = document.querySelectorAll(".messagesforms form");
+
+
+        forms.forEach(form => {
+            if(form.querySelector("select[name='multiline']") && form.querySelector("select[name='multiline']").value == "multiline"){
+                form.querySelector("input[name=message]").classList.toggle("ms-display-none")
+                let textarea = document.createElement("textarea");
+                textarea.setAttribute("name", "message");
+                form.prepend(textarea);
+            }
+            form.querySelector("select").addEventListener("change", e=>{
+                if(e.target.name == "multiline" && e.target.value=="multiline"){
+                    e.target.parentNode.querySelector("input[name=message]").classList.toggle("ms-display-none")
+                    let textarea = document.createElement("textarea");
+                    textarea.setAttribute("name", "message");
+                    form.prepend(textarea);
+                }else{
+                    
+                    let textarea = e.target.parentNode.querySelector("textarea");
+                    if(textarea){
+                        textarea.remove();
+                        e.target.parentNode.querySelector("input[name=message]").classList.toggle("ms-display-none")
+                    }
+                }
+            })
+            form.addEventListener("submit", e=>{
                 e.target.querySelector(".ms-loading").classList.toggle("ms-display-none")
                 e.preventDefault();
                 let formData = new FormData(e.target);
-                fetch("/messages",
+             
+                fetch(e.target.action,
                     {
                         body: formData,
                         method: "post"
@@ -80,6 +124,29 @@
 
             })
         });
+
+
+        let systemforms = document.querySelectorAll(".system form")
+        
+        systemforms.forEach(form=>{
+            form.addEventListener("submit", e=>{
+            e.target.querySelector(".ms-loading").classList.toggle("ms-display-none")
+            e.preventDefault();
+            let formData = new FormData(e.target);
+            fetch(e.target.action,
+                    {
+                        body: formData,
+                        method: "post"
+                    }).then(r=>r.json())
+                    .then(d=>{
+                        setTimeout(()=>{
+                            window.location.reload();
+                        }, 5000)
+                        
+                    });
+        })
+    })
+
     })
 </script>
 
