@@ -35,7 +35,7 @@ frame_master = []
 def create_image(url): 
     img_data = urlopen(url).read()
     image = Image.open(io.BytesIO(img_data))
-
+    image.thumbnail((30,30))
     image_dat = {
         "image": image,
         "frames": [],
