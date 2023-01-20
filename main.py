@@ -1,9 +1,16 @@
 import flask
-
+import requests
 import database
 request = flask.request
 import makegif
 import subprocess
+import pathlib
+import os
+import scroll_redemption
+from threading import Thread
+
+working_dir = pathlib.Path(__file__).parent.absolute()
+dirscroll = os.path.join(working_dir, "scroll_redemption.py")
 
 message_queue, default_messages = database.message_db()
 
@@ -13,6 +20,11 @@ app.config.update(
     TEMPLATES_AUTO_RELOAD=True
     
 )
+
+
+def signstatus(option):
+    sub = subprocess.run([f"systemctl {option} displaygif"], shell=True)
+    return sub
 
 
 @app.route("/")
@@ -38,15 +50,21 @@ def sys():
     sub = ''
     if request.method == 'POST':
         if(request.form.get("status") == "restart"):
-            sub = subprocess.run(["systemctl start displaygif"], shell=True)
-        if(request.form.get("status") == "start"):
-            sub = subprocess.run(["systemctl start displaygif"], shell=True)
-        if(request.form.get("status") == "stop"):
-            sub = subprocess.run(["systemctl stop displaygif"], shell=True)
-    print(sub)
-    print(request.form.get("status"))
+            sub = signstatus("restart")
+        elif (request.form.get("status") == "start"):
+            sub = signstatus("start")
+        elif (request.form.get("status") == "stop"):
+            sub = signstatus("stop")
+        else:
+            sub = signstatus("restart")
+
     return({"status": "Ready"})
-        
+@app.route("/redemption", methods= ['POST'])
+def redemption():
+    text = request.form.get("redemption")
+    scroll_redemption.start(text)
+    return ({"status":"done"})
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
     con.close()

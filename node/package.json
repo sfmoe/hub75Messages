@@ -10,8 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@napi-rs/canvas": "^0.1.33",
-    "sharp": "^0.31.3",
-    "sharp-gif": "^0.1.7"
+    "tmi.js": "^1.8.5"
   }
 }
