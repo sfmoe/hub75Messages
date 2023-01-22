@@ -62,7 +62,10 @@ def sys():
 @app.route("/redemption", methods= ['POST'])
 def redemption():
     text = request.form.get("redemption")
-    scroll_redemption.start(text)
+    thread = Thread(target = scroll_redemption.start, args = (text,) )
+    thread.start()
+    thread.join()
+    # scroll_redemption.start(text)
     return ({"status":"done"})
 
 if __name__ == '__main__':

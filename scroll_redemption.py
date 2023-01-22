@@ -35,7 +35,7 @@ frame_master = []
 def create_image(url): 
     img_data = urlopen(url).read()
     image = Image.open(io.BytesIO(img_data))
-    image.thumbnail((30,30))
+    image.thumbnail((32,32))
     image_dat = {
         "image": image,
         "frames": [],
@@ -144,15 +144,14 @@ def scroll():
         if x_offset < -message_width:
             x_offset = 128
             current_pass += 1
-    
-
+        
+    return False
     
 
 def start(text):
     global separateUrls
     separateUrls = re.split(urlREGEX, text)
-    thread = Thread(target = scroll )
-    thread.start()
-    thread.join()
+    scroll()
+
 
 # start("this is a test https://static-cdn.jtvnw.net/emoticons/v2/1/default/dark/1.0 for 🤘 https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_f36f3cd50db149489e945b9d7436412f/default/light/1.0 thjs ac")
