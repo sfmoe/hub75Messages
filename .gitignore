@@ -4,3 +4,4 @@ messages.db
 **/*.ttf
 stage.gif
 **/stage.gif
+.env
