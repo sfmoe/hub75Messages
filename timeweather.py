@@ -4,6 +4,8 @@ from PIL import Image, ImageDraw, ImageFont
 import os
 import datetime
 import pathlib
+from urllib.request import urlopen
+import io
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -47,17 +49,21 @@ def makeTime():
     linetwo = ""
     min_temp = ""
     max_temp = ""
+    iconfile = ""
     if minute =="00" or minute=="15" or minute=="30" or minute=="45":
-        min_temp, max_temp = weather()
+        min_temp, max_temp, icon = weather()
         weatherCache = open('weathercache.txt', 'w')
-        linetwo = f"{min_temp}° / {max_temp}°"
+        linetwo = f"{min_temp}°|{max_temp}°"
         weatherCache.write(linetwo)
+        weatherCache.write("\n")
+        weatherCache.write(icon)
         weatherCache.close()
     else:
 
         weatherCache = open('weathercache.txt', 'r')
-        linetwo = weatherCache.read()
-    
+        cache = weatherCache.readlines()
+        linetwo = cache[0]
+
 
     while numb_frames > 0:
         stage = makeStage()
@@ -70,10 +76,11 @@ def makeTime():
         linetwow, linetwoh = emojiFont.getsize(linetwo)
 
         new_x = int((width-textwidth)/2)
-        linetwo_fixedX = int((width-linetwow)/2)
+        linetwo_fixedX = int((width-linetwow)/2)+12
         layer.text( (new_x, lineone_y), text, font=emojiFont, embedded_color=True)
+        weather_icon = Image.open(os.path.join(gif_folder, "outgif", "temp_weather.png"))
+        stage.paste(weather_icon, (stage_x-4, int(linetwo_y/2)+5 ), weather_icon )
         layer.text( (linetwo_fixedX, linetwo_y), linetwo, font=emojiFont, embedded_color=True)
-
         frames.append(stage)
         numb_frames -= 1
     frame_one = frames[0]     
@@ -86,8 +93,9 @@ def weather():
     json_data = response.json() if response and response.status_code == 200 else None
     if json_data and 'main' in json_data:
         temp_max = kelvfar(json_data["main"]["temp_max"])
-        temp_min = kelvfar(json_data["main"]["temp_min"])        
-    return (temp_min, temp_max)
+        temp_min = kelvfar(json_data["main"]["temp_min"]) 
+    icon = getIcon(json_data["weather"][0]["icon"])       
+    return (temp_min, temp_max, json_data["weather"][0]["icon"])
 
 def kelvfar(val):
     # kelvin conversion formula
@@ -96,5 +104,12 @@ def kelvfar(val):
     conversion = (val - 273.15) * 1.8 + 32
     return round(conversion)
 
+def getIcon(code):
+    img_data = urlopen(f"https://openweathermap.org/img/wn/{code}.png").read()
+    image = Image.open(io.BytesIO(img_data))
+    image.thumbnail((15,15))
+    image.save(os.path.join(gif_folder, "outgif", "temp_weather.png"))
+    return True
+    
 makeTime()
 
